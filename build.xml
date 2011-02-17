@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="selenium test" default="build">
+	<property file="build.properties" />
+	
+	<path id="app.classpath">
+			<fileset dir="${app.lib.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+		
+		</path>
+
+
+	<target name="init">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${app.classes.dir}" />
+		<mkdir dir="${reports.dir}" />
+		<mkdir dir="${reports.xml.dir}" />
+	</target>
+
+	<target name="clean">
+		<delete dir="${build.dir}" quiet="true" />
+		<delete dir="${reports.dir}" quiet="true" />
+	</target>
+
+	<target name="app.compile" depends="init">
+		<property name="app.src.dir" location="${src.dir}" />
+
+		<javac destdir="${app.classes.dir}" srcdir="${app.src.dir}" target="${target.version}" source="${source.version}">
+			<classpath>
+				<path refid="app.classpath" />
+			</classpath>
+		</javac>
+
+		
+		<copy todir="${app.classes.dir}">
+			<fileset dir="${app.src.dir}" excludes="**/*.java" />
+		</copy>
+		
+	</target>
+
+	
+	<target name="start.server">
+		
+	</target>
+		
+	<target name="stop.server">
+	
+	</target>
+	
+	
+	<target name="app.run" description="Run the tests" depends="init, app.compile">
+
+		<junit fork="true">
+			<classpath>
+				<path refid="app.classpath" />
+
+				<path location="${app.classes.dir}" />
+
+			</classpath>
+			<formatter type="xml" />
+			<batchtest todir="${reports.xml.dir}" failureProperty="selenium.tests.failed">
+				<fileset dir="${app.src.dir}" includes="**/*Test.java" />
+			</batchtest>
+
+		</junit>
+
+		<fail message="unit tests failed" if="selenium.tests.failed" />
+	</target>
+
+	
+
+
+	<target name="build" description="Clean, build, and full test" depends="clean, app.run" />
+
+	
+</project>
