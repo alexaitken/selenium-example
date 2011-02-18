@@ -1,0 +1,15 @@
+Quick Selenium setup.
+
+To set up
+
+
+download this project.
+
+create a new java project in eclipse
+
+goto file -> import and import the downloaded project in to the java project you just created.
+
+now add the selenium-java jar and all the jars in the dependencies folder to the build path.
+
+you now should be good to go.
+
